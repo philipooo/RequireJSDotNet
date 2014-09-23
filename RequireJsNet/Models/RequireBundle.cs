@@ -28,5 +28,7 @@ namespace RequireJsNet.Models
         public List<BundleItem> BundleItems { get; set; }
 
         public bool ParsedIncludes { get; set; }
+
+        public string ContainingConfig { get; set; }
     }
 }

@@ -85,6 +85,7 @@ namespace RequireJsNet.Configuration
                     var result = new RequirePath();
                     var prop = (JProperty)r;
                     result.Key = prop.Name;
+                    result.ContainingConfig = Path;
                     if (prop.Value.Type == JTokenType.String)
                     {
                         result.Value = prop.Value.ToString();
@@ -147,6 +148,8 @@ namespace RequireJsNet.Configuration
                             var bundle = new RequireBundle();
                             var prop = (JProperty)r;
                             bundle.Name = prop.Name;
+                            bundle.ContainingConfig = Path;
+
                             if (prop.Value is JArray)
                             {
                                 bundle.IsVirtual = false;

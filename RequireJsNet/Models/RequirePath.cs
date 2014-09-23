@@ -14,5 +14,7 @@ namespace RequireJsNet.Models
         public string Value { get; set; }
 
         public string DefaultBundle { get; set; }
+
+        public string ContainingConfig { get; set; }
     }
 }

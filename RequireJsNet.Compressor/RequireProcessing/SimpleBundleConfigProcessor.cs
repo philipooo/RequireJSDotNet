@@ -10,6 +10,8 @@ using System.IO;
 using System.Linq;
 
 using RequireJsNet.Configuration;
+using RequireJsNet.Helpers;
+using RequireJsNet.Models;
 
 namespace RequireJsNet.Compressor
 {
@@ -48,15 +50,65 @@ namespace RequireJsNet.Compressor
             var bundles = new List<Bundle>();
             foreach (var bundleDefinition in Configuration.Bundles.BundleEntries.Where(r => !r.IsVirtual))
             {
-                var bundle = new Bundle();
-                bundle.Output = GetOutputPath(bundleDefinition.OutputPath, bundleDefinition.Name);
-                bundle.Files = bundleDefinition.BundleItems
-                                                .Select(r => new FileSpec(this.ResolvePhysicalPath(r.RelativePath), r.CompressionType))
-                                                .ToList();
+                var bundle = new Bundle()
+                {
+                    Output = GetOutputPath(bundleDefinition.OutputPath, bundleDefinition.Name),
+                    Files = bundleDefinition.BundleItems
+                      .Select(r => new FileSpec(this.ResolvePhysicalPath(r.RelativePath), r.CompressionType))
+                      .ToList(),
+                    ContainingConfig = bundleDefinition.ContainingConfig,
+                    BundleId = bundleDefinition.Name
+                };
                 bundles.Add(bundle);
             }
 
+            this.WriteOverrideConfigs(bundles);
+
             return bundles;
+        }
+
+        private void WriteOverrideConfigs(List<Bundle> bundles)
+        {
+            var groupings = bundles.GroupBy(r => r.ContainingConfig).ToList();
+            foreach (var grouping in groupings)
+            {
+                var path = RequireJsNet.Helpers.PathHelpers.GetOverridePath(grouping.Key);
+                var writer = WriterFactory.CreateWriter(path, null);
+                var collection = this.ComposeCollection(grouping.ToList());
+                writer.WriteConfig(collection);
+            }
+        }
+
+        private ConfigurationCollection ComposeCollection(List<Bundle> bundles)
+        {
+            var conf = new ConfigurationCollection();
+            conf.Overrides = new List<CollectionOverride>();
+            foreach (var bundle in bundles)
+            {
+                var scripts = bundle.Files.Select(r => PathHelpers.GetRequireRelativePath(EntryPoint, r.FileName)).ToList();
+                var paths = new RequirePaths
+                {
+                    PathList = new List<RequirePath>()
+                };
+                foreach (var script in scripts)
+                {
+                    paths.PathList.Add(new RequirePath
+                    {
+                        Key = script,
+                        Value = PathHelpers.GetRequireRelativePath(EntryPoint, bundle.Output)
+                    });
+                }
+
+                var over = new CollectionOverride
+                {
+                    BundleId = bundle.BundleId,
+                    BundledScripts = scripts,
+                    Paths = paths
+                };
+                conf.Overrides.Add(over);
+            }
+
+            return conf;
         }
     }
 }

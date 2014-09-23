@@ -196,7 +196,8 @@ namespace RequireJsNet.Configuration
                     .Select(r => new
                     {
                         Bundle = r.Key,
-                        Items = r.ToList()
+                        Items = r.ToList(),
+                        ContainingConfig = r.First().ContainingConfig
                     }).ToList();
 
             foreach (var bundleGroup in groupedPaths)
@@ -215,7 +216,8 @@ namespace RequireJsNet.Configuration
                         Includes = new List<string>(),
                         IsVirtual = true,
                         BundleItems = itemList,
-                        Name = bundleGroup.Bundle
+                        Name = bundleGroup.Bundle,
+                        ContainingConfig = bundleGroup.ContainingConfig
                     });
                 }
                 else
