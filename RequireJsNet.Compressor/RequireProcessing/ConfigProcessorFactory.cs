@@ -19,7 +19,7 @@ namespace RequireJsNet.Compressor.RequireProcessing
                 return new AutoBundleConfigProcessor(projectPath, packagePath, entryPointOverride, filePaths, encoding);
             }
 
-            return new SimpleBundleConfigProcessor(projectPath, packagePath, entryPointOverride, filePaths);
+            return new SimpleBundleConfigProcessor(projectPath, packagePath, entryPointOverride, filePaths, encoding);
         }
     }
 }
