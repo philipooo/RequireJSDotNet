@@ -98,7 +98,7 @@ namespace RequireJsNet.Compressor.AutoDependency
                     deps = shim.Dependencies.Select(r => r.Dependency).ToList();
                 }
 
-                trans.Add(ShimFileTransformation.Create(this.CheckForConfigPath(RelativeFileName.ToModuleName()), deps));
+                trans.Add(ShimFileTransformation2.Create(this.CheckForConfigPath(RelativeFileName.ToModuleName()), deps));
             }
             else
             {

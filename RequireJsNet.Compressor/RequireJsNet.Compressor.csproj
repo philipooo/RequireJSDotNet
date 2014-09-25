@@ -53,6 +53,7 @@
     <Compile Include="AutoDependency\Transformations\AddEmptyDepsArrayTransformation.cs" />
     <Compile Include="AutoDependency\Transformations\IdToLowerTransformation.cs" />
     <Compile Include="AutoDependency\Transformations\ShimFileTransformation.cs" />
+    <Compile Include="AutoDependency\Transformations\ShimFileTransformation2.cs" />
     <Compile Include="Compression\CompressorTaskEngine.cs" />
     <Compile Include="Helpers\FileHelpers.cs" />
     <Compile Include="Logging\ILog.cs" />
