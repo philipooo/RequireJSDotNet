@@ -103,7 +103,8 @@ namespace RequireJsNet.Compressor
                         Dependencies = dependencies
                     });
 
-                    this.EnqueueFileList(tempFileList, fileQueue, dependencies);
+                    //Prevent simple bundling from adding dependencies
+                    //this.EnqueueFileList(tempFileList, fileQueue, dependencies);
                 }
 
                 while (tempFileList.Any())
