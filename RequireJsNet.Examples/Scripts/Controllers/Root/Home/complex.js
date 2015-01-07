@@ -1,3 +1,3 @@
-﻿require(["controllers/root/home/complexLoad"], function() {
-    
+﻿require(["Controllers/Root/Home/complexLoad", "underscore"], function() {
+    _.each([1], alert);
 });
